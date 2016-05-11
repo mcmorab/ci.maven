@@ -12,10 +12,11 @@ The following are the parameters supported by this goal in addition to the [comm
 | appArchive | Name of an application to be undeployed. The application type can be war, ear, rar, eba, zip, or jar. | No |
 | patternSet | Includes and excludes patterns of applications to be undeployed. | No |
 | timeout | Maximum time to wait (in seconds) to verify that the undeployment has completed successfully. The default value is 40 seconds. | No |
+| undeployLocation | Specify the location to undeploy the application. It can be dropins or configDropins. | No. By default, the `undeployLocation` is dropins. |
 
 Examples:
 
- 1. Single undeploy from an application file.
+ 1. Single undeploy from an application file from dropins.
   ```xml
     <execution>
         <id>undeploy-by-appArchive</id>
@@ -29,7 +30,7 @@ Examples:
     </execution>
   ```
 
- 2. Single undeploy from an application with maven coordinates.
+ 2. Single undeploy from an application with maven coordinates from configDropins.
    ```xml
     <execution>
         <id>undeploy-by-appArtifact</id>
@@ -44,10 +45,12 @@ Examples:
                 <version>1.0</version>
                 <type>war</type>
             </appArtifact>
+            <undeployLocation>configDropins<undeployLocation>
         </configuration>
     </execution>
   ```
- 3. Undeploy all.
+
+ 3. Undeploy all from dropins.
   ```xml
     <execution>
         <id>undeploy-all</id>
@@ -58,7 +61,7 @@ Examples:
     </execution>
   ```
 
- 4. Undeploy from a patternSet.
+ 4. Undeploy by a patternSet from dropins.
   ```xml
     <execution>
         <id>undeploy-by-patternSet</id>

@@ -12,10 +12,13 @@ The following are the parameters supported by this goal in addition to the [comm
 | appArchive | Location of an application file to be deployed. The application type can be war, ear, rar, eba, zip, or jar. | Yes, if appArtifact is not set. |
 | timeout | Maximum time to wait (in seconds) to verify that the deployment has completed successfully. The default value is 40 seconds. | No |
 | appDeployName| The file name of the deployed application in the `dropins` directory. It is possible to use Maven properties to define it, for example `${project.artifactId}` or `${project.name}`. | No. By default, the `deployName` is the same as the original file name.|
+| deployDestination | Specify the destination to deploy the application. It can be dropins or configDropins. | No. By default, the `deployDestination` is dropins. |
+| contextRoot | Specify the entry point of the deployed application. This option applies only when the `deployDestination` is configDropins. | No. |
+| commonLibraryRef | Specify an id of Liberty library defined in the server.xml. This option applies only when the `deployDestination` is configDropins. | No. |
 
 Examples:
 
- 1. Single deploy of an application with the path of a file.
+ 1. Single deploy of an application with the path of a file to dropins.
 
   ```xml
     <execution>
@@ -30,7 +33,7 @@ Examples:
     </execution>
    ```
 
- 2. Single deploy of an application with Maven coordinates using the Maven property `${project.artifactId}` to change the name, this will be `webapp.war` instead of `webapp-1.0.war` .
+ 2. Single deploy of an application to dropins with Maven coordinates using the Maven property `${project.artifactId}` to change the name, this will be `webapp.war` instead of `webapp-1.0.war` .
 
   ```xml
     <execution>
@@ -50,3 +53,22 @@ Examples:
         </configuration>
     </execution>
   ```
+
+ 3. Single deploy of an application with the path of a file to configDropins specifying the context root and Liberty library to use. 
+
+  ```xml
+    <execution>
+        <id>deploy-app</id>
+        <phase>post-integration-test</phase>
+        <goals>
+            <goal>deploy</goal>
+        </goals>
+        <configuration>
+            <appArchive>HelloWorld.war</appArchive>
+            <deployDestination>configDropins</deployDestination>
+            <commonLibaryRef>global</commonLibaryRef>
+            <contextRoot>somePath</contextRoot>
+        </configuration>
+    </execution>
+   ```
+ 
