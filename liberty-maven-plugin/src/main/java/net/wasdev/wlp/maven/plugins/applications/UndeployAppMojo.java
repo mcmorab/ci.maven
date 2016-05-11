@@ -68,6 +68,13 @@ public class UndeployAppMojo extends BasicSupport {
      */
     protected int timeout = 40;
     
+    /**
+     * Location to remove the app.
+     *
+     * @parameter expression="${undeployLocation}" default-value="dropins"
+     */
+    protected String undeployLocation = "dropins";
+    
     /*
      * (non-Javadoc)
      * @see org.codehaus.mojo.pluginsupport.MojoSupport#doExecute()
@@ -115,7 +122,7 @@ public class UndeployAppMojo extends BasicSupport {
                 
             }
             
-            File destFile = new File(serverDirectory, "dropins/" + appArchive);
+            File destFile = new File(serverDirectory, undeployLocation.equals("dropins") ? "dropins/" + appArchive : "configDropins/overrides/" + appArchive + ".xml");
             if (destFile == null || !destFile.exists()
                     || destFile.isDirectory()) {
                 throw new IOException(MessageFormat.format(
@@ -132,13 +139,19 @@ public class UndeployAppMojo extends BasicSupport {
             log.info(messages.getString("info.undeploy.patternset"));
             undeployTask.addPatternset(patternSet);
         } else {
-            log.info(messages.getString("info.undeploy.all"));
+        	if (undeployLocation.equals("dropins")) {
+        		log.info(messages.getString("info.undeploy.all.dropins"));
+        	} else {
+        		log.info(messages.getString("info.undeploy.all.configdropins"));
+        	}
+            
         }
         
         undeployTask.setInstallDir(installDirectory);
         undeployTask.setServerName(serverName);
         undeployTask.setUserDir(userDirectory);
         undeployTask.setOutputDir(outputDirectory);
+        undeployTask.setUndeployLocation(undeployLocation);
         
         // Convert from seconds to milliseconds
         undeployTask.setTimeout(Long.toString(timeout * 1000));

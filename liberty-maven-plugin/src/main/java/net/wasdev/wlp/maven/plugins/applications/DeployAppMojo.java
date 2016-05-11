@@ -59,6 +59,27 @@ public class DeployAppMojo extends BasicSupport {
      * @parameter expression="${appDeployName}"
      */
     protected String appDeployName;
+    
+    /**
+     * The destination where the application will be deployed.
+     *
+     * @parameter expression="${deployDestination}"
+     */
+    protected String deployDestination;
+
+    /**
+     * The entry point of the deployed application
+     *
+     * @parameter expression="${contextRoot}"
+     */
+    protected String contextRoot;
+
+    /**
+     * A Liberty library's id defined in the server.xml
+     *
+     * @parameter expression="${commonLibraryRef}"
+     */
+    protected String commonLibraryRef;
 
     @Override
     protected void doExecute() throws Exception {
@@ -100,6 +121,9 @@ public class DeployAppMojo extends BasicSupport {
         deployTask.setDeployName(appDeployName);
         // Convert from seconds to milliseconds
         deployTask.setTimeout(Long.toString(timeout*1000));
+        deployTask.setDeployDestination(deployDestination);
+        deployTask.setCommonLibraryRef(commonLibraryRef);
+        deployTask.setContextRoot(contextRoot);
         deployTask.execute();
     }
 }
